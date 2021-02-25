@@ -14,7 +14,7 @@ import java.net.URL;
 public class FirstTest {
 
     private AppiumDriver driver;
-@Before
+    @Before
     public void setUp () throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", "Android");
@@ -27,82 +27,15 @@ public class FirstTest {
 
         driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
     }
-@After
+    @After
     public void tearDown () {
         driver.quit();
     }
-
     @Test
-    public void firstTest () {
-    waitForElementAndClick(
-            By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-            "cannot find Wikipedia search",
-            5
-    );
-    waitForElementAndSendKeys(
-            By.xpath("//*[contains(@text, 'Search…')]"),
-            "Java",
-            "Cannot find input",
-            5
-
-    );
-
-        waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']//*[@text='Java (programming language)']")
-                , "Cannot find",
-                15);
-
-    }
-    @Test
-    public void testCancelSearch(){
-    waitForElementAndClick(
-            By.id("org.wikipedia:id/search_container"),
-            "Cannot find Search",
-            5
-
-    );
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
-                "Cannot find input",
-                5
-
-        );
-        waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Not found",
-                5
-        );
-        waitForElementAndClick(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find Cancel Button",
-                5
-
-        );
-        waitForElementNotPresent(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "mistake",
-                5
-        );
-    }
-    @Test
-    public void testCompareArticleTitle(){
-        waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "cannot find Wikipedia search",
-                5
-        );
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "Java",
-                "Cannot find input",
-                5
-
-        );
-        waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']//*[@text, 'Java (programming language)']"),
-                "cannot find Wikipedia search",
-                5
-        );
+    public void testAssertHasText() throws Exception {
+        assertElementHasText(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Search container does not have text Search Wikipedia",
+                "Search Wikipedia");
     }
     private WebElement waitForElementPresent (By by, String error_message, long timeoutInSeconds)
     {
@@ -113,9 +46,9 @@ public class FirstTest {
         );
     }
 
-    private WebElement waitForElementPresent (By by, String error_message)
+    private WebElement waitForElementPresent (By by, String errorMessage, String error_message)
     {
-    return waitForElementPresent(by,error_message, 5);
+        return waitForElementPresent(by,error_message, 5);
     }
 
     private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds){
@@ -140,9 +73,20 @@ public class FirstTest {
     }
 
     private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds) {
-    WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-    element.clear();
-    return element;
+        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        element.clear();
+        return element;
+
+    }
+
+    private String assertElementHasText(By by, String error_message, String expected_text) throws Exception {
+        WebElement element = waitForElementPresent(by, error_message,error_message);
+        String actual_text = element.getAttribute("text");
+        if (!actual_text.equals(expected_text)) {
+            throw new Exception(error_message);
+        } else {
+            return  actual_text;
+        }
 
     }
 }
