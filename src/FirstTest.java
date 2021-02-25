@@ -37,6 +37,30 @@ public class FirstTest {
                 "Search container does not have text Search Wikipedia",
                 "Search Wikipedia");
     }
+
+    @Test
+    public void testSearchAndCancel() {
+        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                "King",
+                "Cannot find input",
+                5
+        );
+        waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='King-Rega']"),
+                "There is not article 'King-Rega'",
+                15);
+        waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Influential 1611 English version of the Bible']"),
+                "There is not article 'Influential 1611 English version of the Bible'",
+                15);
+        waitForElementAndClear(By.id("org.wikipedia:id/search_src_text"),
+                "Input field not found",
+                15);
+        waitForElementPresent(By.id("org.wikipedia:id/search_empty_message"),
+                "Results are not empty",
+                15);
+    }
     private WebElement waitForElementPresent (By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -44,11 +68,6 @@ public class FirstTest {
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
-    }
-
-    private WebElement waitForElementPresent (By by, String errorMessage, String error_message)
-    {
-        return waitForElementPresent(by,error_message, 5);
     }
 
     private boolean waitForElementNotPresent(By by, String error_message, long timeoutInSeconds){
@@ -80,7 +99,7 @@ public class FirstTest {
     }
 
     private String assertElementHasText(By by, String error_message, String expected_text) throws Exception {
-        WebElement element = waitForElementPresent(by, error_message,error_message);
+        WebElement element = waitForElementPresent(by, error_message,5);
         String actual_text = element.getAttribute("text");
         if (!actual_text.equals(expected_text)) {
             throw new Exception(error_message);
