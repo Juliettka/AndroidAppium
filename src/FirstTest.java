@@ -1,5 +1,6 @@
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.Locale;
 
 public class FirstTest {
 
@@ -61,6 +63,28 @@ public class FirstTest {
                 "Results are not empty",
                 15);
     }
+
+    @Test
+    public void testSearchResultsContainSearchTerm() throws Exception {
+        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find input",
+                5
+        );
+        Assert.assertTrue(assertElementContainsText(By.xpath("//*[contains(@text,'Java')]"),
+                "This search result 'Java' does not contain Java",
+                "java") &&
+                assertElementContainsText(By.xpath("//*[contains(@text,'JavaScript')]"),
+                        "This search result 'JavaScript' does not contain Java",
+                        "java")
+                && assertElementContainsText(By.xpath("//*[contains(@text,'Java (programming language)')]"),
+                "This search result 'Java (programming language)' does not contain Java",
+                "java"));
+
+    }
     private WebElement waitForElementPresent (By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -101,11 +125,17 @@ public class FirstTest {
     private String assertElementHasText(By by, String error_message, String expected_text) throws Exception {
         WebElement element = waitForElementPresent(by, error_message,5);
         String actual_text = element.getAttribute("text");
-        if (!actual_text.equals(expected_text)) {
+        if (!actual_text.toLowerCase().equals(expected_text.toLowerCase())) {
             throw new Exception(error_message);
         } else {
             return  actual_text;
         }
-
+    }
+    private boolean assertElementContainsText(By by, String error_message, String expected_text) throws Exception {
+        WebElement element = waitForElementPresent(by, error_message, 5);
+        String actual_text = element.getAttribute("text");
+        if (actual_text.toLowerCase().contains(expected_text.toLowerCase()))
+            return true;
+        else throw new Exception(error_message);
     }
 }
