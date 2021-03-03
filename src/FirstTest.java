@@ -371,6 +371,26 @@ public class FirstTest {
                 title_of_article_in_my_list,
                 title_of_the_article);
     }
+    @Test
+    public void testAssertTitle(){
+        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        String search_line = "King";
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find input",
+                5
+        );
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='King']"),
+                "Article King not found",
+                5);
+        waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "Article King has not been opened",
+                5);
+        assertElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "There is no title element");
+    }
     private WebElement waitForElementPresent (By by, String error_message, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
@@ -472,8 +492,16 @@ public class FirstTest {
         int amount_of_elements = getAmountOfElements(by);
         if (amount_of_elements>0)
         {
-            String default_message = "An element" +by.toString() + "supposed to be not present";
+            String default_message = "An element" +by.toString() + "is supposed to be not present";
             throw new AssertionError(default_message+ " "+ error_message);
+        }
+    }
+    private void assertElementPresent(By by, String error_message) {
+        int amount_of_elements = getAmountOfElements(by);
+        if (amount_of_elements == 0)
+        {
+            String default_message = "An element "+ by.toString() + " is supposed to be present";
+            throw  new AssertionError(default_message+ " "+ error_message);
         }
     }
     private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeOutInSeconds){
