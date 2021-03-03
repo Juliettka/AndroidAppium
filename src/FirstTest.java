@@ -106,11 +106,11 @@ public class FirstTest {
         waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
                 "not found again",
                 15);
-       swipeUpToFindElement(
-               By.xpath("//*[@text = 'View page in browser']"),
-               "Cannot find the end of article",
-               20
-       );
+        swipeUpToFindElement(
+                By.xpath("//*[@text = 'View page in browser']"),
+                "Cannot find the end of article",
+                20
+        );
     }
     @Test
     public void saveFirstArticleToMyList(){
@@ -267,6 +267,109 @@ public class FirstTest {
         waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='Appium']"),
                 "cannot find article after returning from background",
                 5);
+    }
+    @Test
+    public void testSave2ArticlesToTheList(){
+        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        String search_line = "King";
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find input",
+                5
+        );
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='King']"),
+                "Article King not found",
+                5);
+        waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "Article King has not been opened",
+                5);
+        waitForElementAndClick(By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "There is no 'more options' on the page",
+                15
+        );
+        waitForElementAndClick(By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find 'Add to reading list'",
+                5);
+        waitForElementAndClick(By.id("org.wikipedia:id/onboarding_button"),
+                "GOT IT button not found",
+                15);
+        waitForElementAndClear(By.id("org.wikipedia:id/text_input"),
+                "Cannot find input field",
+                5);
+        String name_of_folder = "Ex5";
+        waitForElementAndSendKeys(By.id("org.wikipedia:id/text_input"),
+                name_of_folder,
+                "Cannot enter reading list title",
+                5);
+        waitForElementAndClick(By.xpath("//*[@text='OK']"),
+                "Cannot press OK button",
+                5);
+        waitForElementAndClick(By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article",
+                15
+        );
+        waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find input",
+                5
+        );
+        waitForElementAndClick(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='King James Version']"),
+                "Article 'King James Version' not found",
+                5);
+        waitForElementPresent(By.id("org.wikipedia:id/view_page_title_text"),
+                "Article 'King James Version' has not been opened",
+                5);
+        waitForElementAndClick(By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "There is no 'more options' on the page",
+                5
+        );
+        waitForElementAndClick(By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find 'Add to reading list'",
+                5);
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/item_container"),
+                "cannot find already created list",
+                5
+        );
+        waitForElementAndClick(By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot close article King James Version",
+                15
+        );
+        waitForElementAndClick(By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "Cannot find Navigation button to my lists",
+                15
+        );
+        waitForElementAndClick(By.xpath("//*[@text='"+ name_of_folder + "']"),
+                "Cannot find Reading list",
+                5);
+        swipeElementToLeft(By.xpath("//*[@text='King']"),
+                "cannot swipe");
+        waitForElementNotPresent(By.xpath("//*[@text='King']"),
+                "cannot delete saved article",
+                15);
+        waitForElementPresent(By.xpath("//*[@text='King James Version']"),
+                "cannot find second article",
+                5);
+        String title_of_article_in_my_list = waitForElementAndGetAttribute(By.id("org.wikipedia:id/page_list_item_title"),
+                "text",
+                "cannot find title",
+                5);
+        waitForElementAndClick(By.xpath("//*[@text='King James Version']"),
+                "cannot tap on second article",
+                5);
+        String title_of_the_article = waitForElementAndGetAttribute(By.id("org.wikipedia:id/view_page_title_text"),
+                "text",
+                "cannot find article title",
+                5
+        );
+        Assert.assertEquals("The title of the article is not equal to the title in my list",
+                title_of_article_in_my_list,
+                title_of_the_article);
     }
     private WebElement waitForElementPresent (By by, String error_message, long timeoutInSeconds)
     {
