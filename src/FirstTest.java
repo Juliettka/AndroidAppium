@@ -32,6 +32,7 @@ public class FirstTest {
         capabilities.setCapability("app", "C:\\Users\\julie\\Desktop\\JAVAAPpiumAUthomation\\AndroidAppium\\apks\\org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
+        driver.rotate(ScreenOrientation.PORTRAIT);
     }
     @After
     public void tearDown () {
