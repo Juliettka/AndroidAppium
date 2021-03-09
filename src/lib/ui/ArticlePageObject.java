@@ -6,14 +6,15 @@ import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject {
     private static final String
-    TITLE = "org.wikipedia:id/view_page_title_text",
-    FOOTER_ELEMENT = "//*[@text = 'View page in browser']",
-    OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
-    OPTIONS_ADD_TO_MY_LIST_BUTTON = "//*[@text='Add to reading list']",
-    ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
-    MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
-    MY_LIST_OK_BUTTON = "//*[@text='OK']",
-    CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+            TITLE = "org.wikipedia:id/view_page_title_text",
+            FOOTER_ELEMENT = "//*[@text = 'View page in browser']",
+            OPTIONS_BUTTON = "//android.widget.ImageView[@content-desc='More options']",
+            OPTIONS_ADD_TO_MY_LIST_BUTTON = "//*[@text='Add to reading list']",
+            ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
+            MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
+            MY_LIST_OK_BUTTON = "//*[@text='OK']",
+            CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+            EXISTING_FOLDER = "org.wikipedia:id/item_container";
     public ArticlePageObject (AppiumDriver driver) {
         super(driver);
     }
@@ -53,10 +54,31 @@ public class ArticlePageObject extends MainPageObject {
                 "Cannot press OK button",
                 5);
     }
+
+    public void addArticleToExistingMyList(){
+        this.waitForElementAndClick(By.xpath(OPTIONS_BUTTON),
+                "no more options",
+                15
+        );
+        this.waitForElementAndClick(By.xpath(OPTIONS_ADD_TO_MY_LIST_BUTTON),
+                "no reading list",
+                5);
+        this.waitForElementAndClick(
+                By.id(EXISTING_FOLDER),
+                "cannot find already created list",
+                5
+        );
+    }
     public void closeArticle(){
         this.waitForElementAndClick(By.xpath(CLOSE_ARTICLE_BUTTON),
                 "Cannot close article",
                 15
         );
+    }
+    public void articleOpened(){
+        this.waitForTitleElement();
+    }
+    public void checkArticleTitleElement(){
+        this.assertElementPresent(By.id(TITLE), "Article title element is not present");
     }
 }

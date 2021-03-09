@@ -10,7 +10,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']";
+            SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
+            SEARCH_INPUT_ID = "org.wikipedia:id/search_src_text",
+            SEARCH_EMPTY_PAGE = "org.wikipedia:id/search_empty_message";
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
     }
@@ -59,9 +61,16 @@ public class SearchPageObject extends MainPageObject {
         return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
     }
     public void waitForEmptyResultsLabel(){
-        this.waitForElementPresent(By.xpath(SEARCH_EMPTY_RESULT_ELEMENT), "Cannot find empty result elememnt", 15);
+        this.waitForElementPresent(By.xpath(SEARCH_EMPTY_RESULT_ELEMENT), "Cannot find empty result element", 15);
     }
     public void assertThereIsNoResultOfSearch(){
         this.assertElementNotPresent(By.xpath(SEARCH_RESULT_ELEMENT), "We supposed to find no results");
+    }
+    public void clearSearchField(){
+        this.waitForElementAndClear(By.id(SEARCH_INPUT_ID), "Input field not found to clear it", 15);
+    }
+
+    public void waitForEmptySearchLabel(){
+        this.waitForElementPresent(By.id(SEARCH_EMPTY_PAGE), "There is results on the page", 15);
     }
 }

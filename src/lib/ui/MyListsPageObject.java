@@ -2,11 +2,13 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class MyListsPageObject extends MainPageObject{
     public static final String
-    FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-    ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
+            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']",
+            TITLE_ELEMENT_IN_MY_LISTS = "org.wikipedia:id/page_list_item_title";
 
     private static String getFolderXPathByName(String name_of_folder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}",
@@ -42,6 +44,15 @@ public class MyListsPageObject extends MainPageObject{
         String article_xpath = getFolderXPathByName(article_title);
         this.waitForElementPresent(By.xpath(article_xpath),
                 "Cannot find saved article by title" +article_title,
+                15);
+    }
+    public String getArticleTitleInTheList(){
+        WebElement title_element = waitForTitleInMyListElement();
+        return title_element.getAttribute("text");
+    }
+
+    private WebElement waitForTitleInMyListElement () {
+        return this.waitForElementPresent(By.id(TITLE_ELEMENT_IN_MY_LISTS), "Cannot find Article Title in my lists",
                 15);
     }
 }

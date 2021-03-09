@@ -30,6 +30,17 @@ public class ArticleTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
         ArticlePageObject.waitForTitleElement();
         ArticlePageObject.swipeToFooter();
-
+    }
+    @Test
+    public void testAssertTitle(){
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        String search_line = "King";
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.clickByArticleWithSubstring("King");
+        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject.waitForTitleElement();
+        ArticlePageObject.articleOpened();
+        ArticlePageObject.checkArticleTitleElement();
     }
 }

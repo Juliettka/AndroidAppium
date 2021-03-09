@@ -4,7 +4,6 @@ import lib.CoreTestCase;
 import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class SearchTests extends CoreTestCase {
     @Test
@@ -20,18 +19,10 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("King");
-        MainPageObject.waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='King-Rega']"),
-                "There is not article 'King-Rega'",
-                15);
-        MainPageObject.waitForElementPresent(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Influential 1611 English version of the Bible']"),
-                "There is not article 'Influential 1611 English version of the Bible'",
-                15);
-        MainPageObject.waitForElementAndClear(By.id("org.wikipedia:id/search_src_text"),
-                "Input field not found",
-                15);
-        MainPageObject.waitForElementPresent(By.id("org.wikipedia:id/search_empty_message"),
-                "Results are not empty",
-                15);
+        SearchPageObject.waitForSearchResult("King-Rega");
+        SearchPageObject.waitForSearchResult("Influential 1611 English version of the Bible");
+        SearchPageObject.clearSearchField();
+        SearchPageObject.waitForEmptySearchLabel();
     }
 
     @Test
@@ -64,4 +55,43 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.clickCancelButton();
         SearchPageObject.waitForCancelButtonToDisappear();
     }
+
+ /*//   @Test
+  //  public void testAssertHasText() throws Exception {
+ //       MainPageObject.assertElementHasText(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+  //              "Search container does not have text Search Wikipedia",
+  //              "Search Wikipedia");
+  //  }
+
+
+
+    @Test
+    public void testSearchResultsContainSearchTerm() throws Exception {
+        MainPageObject.waitForElementAndClick(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Element 'Search Wikipedia' not found",
+                5);
+        MainPageObject.waitForElementAndSendKeys(By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find input",
+                5
+        );
+        assertTrue(MainPageObject.assertElementContainsText(By.xpath("//*[contains(@text,'Java')]"),
+                "This search result 'Java' does not contain Java",
+                "java") &&
+                MainPageObject.assertElementContainsText(By.xpath("//*[contains(@text,'JavaScript')]"),
+                        "This search result 'JavaScript' does not contain Java",
+                        "java")
+                && MainPageObject.assertElementContainsText(By.xpath("//*[contains(@text,'Java (programming language)')]"),
+                "This search result 'Java (programming language)' does not contain Java",
+                "java"));
+
+    }
+
+
+
+
+
+
+    */
+
 }
