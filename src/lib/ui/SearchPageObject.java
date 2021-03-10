@@ -8,6 +8,7 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_INIT_ELEMENT = "//*[contains(@text, 'Search Wikipedia')]",
             SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
             SEARCH_RESULT_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+            SEARCH_RESULT_ARTICLE_TITLE_AND_DESCRIPTION_TPL = "//*[@text='{TITLE}']/following-sibling::*[@text='{DESCRIPTION}']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_EMPTY_RESULT_ELEMENT = "//*[@text='No results found']",
@@ -16,9 +17,16 @@ public class SearchPageObject extends MainPageObject {
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
     }
+    /*TEMPLATES METHODS*/
     private static String getResultSearchElement(String substring){
         return SEARCH_RESULT_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
+    private static String getResultSearchElementWithTitleAndDescriptionXpath(String title, String description)
+    {
+        return SEARCH_RESULT_ARTICLE_TITLE_AND_DESCRIPTION_TPL.replace("{TITLE}", title)
+                .replace("{DESCRIPTION}", description);
+    }
+    /*TEMPLATES METHODS*/
     public void initSearchInput() {
         this.waitForElementAndClick(By.xpath(SEARCH_INIT_ELEMENT),
                 "Cannot find and click init search element",5);
@@ -47,6 +55,12 @@ public class SearchPageObject extends MainPageObject {
     public void waitForSearchResult(String substring){
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementPresent(By.xpath(search_result_xpath), "Cannot find search result with substring" + substring, 5);
+    }
+    public void waitForElementByTitleAndDescription(String title, String description) {
+        String search_result_xpath = getResultSearchElementWithTitleAndDescriptionXpath(title, description);
+        this.waitForElementPresent(By.xpath(search_result_xpath),
+                "Cannot find element with " + title +"and"+ description,
+                15);
     }
     public void clickByArticleWithSubstring(String substring){
         String search_result_xpath = getResultSearchElement(substring);

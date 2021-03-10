@@ -55,7 +55,15 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.clickCancelButton();
         SearchPageObject.waitForCancelButtonToDisappear();
     }
-
+    @Test
+    public void testSearchByTitleAndDescription(){
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        String search_line = "Java";
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.waitForElementByTitleAndDescription("Java","Island of Indonesia");
+        SearchPageObject.waitForElementByTitleAndDescription("JavaScript","Programming language");
+    }
  /*//   @Test
   //  public void testAssertHasText() throws Exception {
  //       MainPageObject.assertElementHasText(By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
@@ -86,12 +94,6 @@ public class SearchTests extends CoreTestCase {
                 "java"));
 
     }
-
-
-
-
-
-
-    */
+  */
 
 }
