@@ -3,46 +3,45 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
-import java.util.Locale;
 
 public class WelcomePageObject extends MainPageObject{
     private static final String
-    STEP_LEARN_MORE_LINK = "Learn more about Wikipedia",
-    STEP_NEW_WAYS_TO_EXPLORE = "New ways to explore",
-    STEP_ADD_OR_EDIT_PREF_LANG = "Add or edit preferred languages",
-    STEP_LEARN_MORE_ABOUT_DATA_COLLECTED = "Learn more about data collected",
-    GET_STARTED = "Get started",
-    NEXT_BUTTON = "Next";
+    STEP_LEARN_MORE_LINK = "id:Learn more about Wikipedia",
+    STEP_NEW_WAYS_TO_EXPLORE = "id:New ways to explore",
+    STEP_ADD_OR_EDIT_PREF_LANG = "id:Add or edit preferred languages",
+    STEP_LEARN_MORE_ABOUT_DATA_COLLECTED = "id:Learn more about data collected",
+    GET_STARTED = "id:Get started",
+    NEXT_BUTTON = "id:Next";
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
     }
     public void waitForLearnMoreLink(){
-        this.waitForElementPresent(By.id(STEP_LEARN_MORE_LINK),
+        this.waitForElementPresent(STEP_LEARN_MORE_LINK,
                 "Cannot find Learn more element",
                 10);
     }
     public void clickNextButton(){
-        this.waitForElementAndClick(By.id(NEXT_BUTTON),
+        this.waitForElementAndClick(NEXT_BUTTON,
                 "Cannot find Next button",
                 10);
     }
     public void clickGetStartedButton(){
-        this.waitForElementAndClick(By.id(GET_STARTED),
+        this.waitForElementAndClick(GET_STARTED,
                 "Cannot find Get Started button",
                 10);
     }
     public void waitForNewWayToExploreText(){
-        this.waitForElementPresent(By.id(STEP_NEW_WAYS_TO_EXPLORE),
+        this.waitForElementPresent(STEP_NEW_WAYS_TO_EXPLORE,
                 "Cannot find New ways to explore",
                 10);
     }
     public void waitForAddOrEditLangText(){
-        this.waitForElementPresent(By.id(STEP_ADD_OR_EDIT_PREF_LANG),
+        this.waitForElementPresent(STEP_ADD_OR_EDIT_PREF_LANG,
                 "Cannot find Add or edit preferred languages",
                 10);
     }
     public void waitForLearnMoreDataCollectedText(){
-        this.waitForElementPresent(By.id(STEP_LEARN_MORE_ABOUT_DATA_COLLECTED),
+        this.waitForElementPresent(STEP_LEARN_MORE_ABOUT_DATA_COLLECTED,
                 "Cannot find Learn more about data collected element",
                 10);
     }
