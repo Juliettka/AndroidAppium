@@ -11,7 +11,8 @@ public class WelcomePageObject extends MainPageObject{
     STEP_ADD_OR_EDIT_PREF_LANG = "id:Add or edit preferred languages",
     STEP_LEARN_MORE_ABOUT_DATA_COLLECTED = "id:Learn more about data collected",
     GET_STARTED = "id:Get started",
-    NEXT_BUTTON = "id:Next";
+    NEXT_BUTTON = "id:Next",
+    SKIP = "id:Skip";
     public WelcomePageObject(AppiumDriver driver) {
         super(driver);
     }
@@ -44,5 +45,8 @@ public class WelcomePageObject extends MainPageObject{
         this.waitForElementPresent(STEP_LEARN_MORE_ABOUT_DATA_COLLECTED,
                 "Cannot find Learn more about data collected element",
                 10);
+    }
+    public void clickSkip(){
+        this.waitForElementAndClick(SKIP, "Cannot find Skip Button", 15);
     }
 }
