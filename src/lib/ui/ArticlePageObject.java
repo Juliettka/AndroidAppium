@@ -88,6 +88,10 @@ abstract public class ArticlePageObject extends MainPageObject {
                 15
         );
     }
+    public void addArticleToMySaved(){
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option add to my reading list", 5);
+
+    }
     public void articleOpened(){
         this.waitForTitleElement();
     }

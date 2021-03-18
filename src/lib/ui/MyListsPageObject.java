@@ -1,13 +1,14 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
-public class MyListsPageObject extends MainPageObject{
-    public static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-            TITLE_ELEMENT_IN_MY_LISTS = "id:org.wikipedia:id/page_list_item_title";
+abstract public class MyListsPageObject extends MainPageObject{
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            ARTICLE_BY_TITLE_TPL,
+            TITLE_ELEMENT_IN_MY_LISTS;
 
     private static String getFolderXPathByName(String name_of_folder) {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}",
@@ -31,6 +32,9 @@ public class MyListsPageObject extends MainPageObject{
         String article_xpath = getFolderXPathByName(article_title);
         this.swipeElementToLeft(article_xpath,
                 "cannot swipe saved article");
+        if (Platform.getInstance().isIos()) {
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find saved article");
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
     public void waitForArticleToDisappearByTitle(String article_title) {
