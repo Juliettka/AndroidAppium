@@ -50,33 +50,47 @@ public class MyListsTests extends CoreTestCase {
     public void testSave2ArticlesToTheList(){
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
-        String search_line = "King";
-        SearchPageObject.typeSearchLine(search_line);
-        SearchPageObject.clickByArticleWithSubstring("King");
+       // String search_line = "Java";
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("JavaScript");
+
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String first_article = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Ex5";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+        if (Platform.getInstance().isAndroid()){
+        ArticlePageObject.addArticleToMyList(name_of_folder);}
+        else {ArticlePageObject.addArticleToMySaved();}
         ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isAndroid()) {
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine(search_line);
-        SearchPageObject.clickByArticleWithSubstring("King James Version");
-        ArticlePageObject.waitForTitleElement();
-        String second_article = ArticlePageObject.getArticleTitle();
-        ArticlePageObject.addArticleToExistingMyList();
+        SearchPageObject.typeSearchLine("Java");}
+        SearchPageObject.clickByArticleWithSubstring("Java");
+        ArticlePageObject.waitForSecondTitleElement();
+        String second_article = ArticlePageObject.getSecondArticleTitle();
+        if (Platform.getInstance().isAndroid()) {
+        ArticlePageObject.addArticleToExistingMyList();}
+        else {ArticlePageObject.addArticleToMySaved();}
         ArticlePageObject.closeArticle();
+        if (Platform.getInstance().isIos()) {
+            SearchPageObject.clickCancelButton();
+        }
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
+        if (Platform.getInstance().isIos()) {
+            NavigationUI.closePopup();
+        }
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
+
+        if (Platform.getInstance().isAndroid()) {
+        MyListsPageObject.openFolderByName(name_of_folder);}
+
         MyListsPageObject.swipeByArticleToDelete(first_article);
         MyListsPageObject.waitForArticleToDisappearByTitle(first_article);
         MyListsPageObject.waitForArticleToAppearByTitle(second_article);
-        String title_of_article_in_my_list = MyListsPageObject.getArticleTitleInTheList();
+       // String title_of_article_in_my_list = MyListsPageObject.getArticleTitleInTheList();
 
         assertEquals("The title of the article is not equal to the title in my list",
-                title_of_article_in_my_list,
+                "Java",
                 second_article);
     }
 

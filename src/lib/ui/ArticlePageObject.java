@@ -8,6 +8,7 @@ import lib.Platform;
 abstract public class ArticlePageObject extends MainPageObject {
     protected static String
             TITLE,
+            TITLE_SECOND,
             FOOTER_ELEMENT,
             OPTIONS_BUTTON,
             OPTIONS_ADD_TO_MY_LIST_BUTTON,
@@ -22,6 +23,18 @@ abstract public class ArticlePageObject extends MainPageObject {
     public WebElement waitForTitleElement() {
         return this.waitForElementPresent(TITLE, "Cannot find Article Title",
                 20);
+    }
+    public WebElement waitForSecondTitleElement() {
+        return this.waitForElementPresent(TITLE_SECOND, "Cannot find Article Title",
+                20);
+    }
+    public String getSecondArticleTitle() {
+        WebElement title_element  = waitForSecondTitleElement();
+        if (Platform.getInstance().isAndroid()){
+            return title_element.getAttribute("text");
+        } else {
+            return title_element.getAttribute("name");
+        }
     }
     public String getArticleTitle() {
         WebElement title_element = waitForTitleElement();
